@@ -7,5 +7,14 @@ import { Component } from "@angular/core";
 })
 
 export class ServerComponent {
+    disableButton: boolean = false;
+    
+    constructor(){
+        setTimeout(() => {
+            this.disableButton = true
+        }, 1500);
+    }
+
+
 
 }
