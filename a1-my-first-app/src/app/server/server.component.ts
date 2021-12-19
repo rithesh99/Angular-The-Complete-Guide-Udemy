@@ -15,6 +15,13 @@ export class ServerComponent {
         }, 1500);
     }
 
+    changeButtonStatus(){
+        this.disableButton = !this.disableButton;
+    }
+
+    changeInputText(e){
+        console.log(e);
+    }
 
 
 }

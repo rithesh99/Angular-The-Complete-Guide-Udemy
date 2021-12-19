@@ -4,3 +4,8 @@
 
 <h1>Button disabled </h1>
 <h2>- {{ disableButton }}</h2>
+
+<button (click)='changeButtonStatus()'>Change button status</button>
+
+
+<input type="text" name="myname" (input)="changeInputText($event)" />
