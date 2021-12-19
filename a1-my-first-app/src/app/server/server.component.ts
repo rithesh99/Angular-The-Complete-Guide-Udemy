@@ -3,11 +3,16 @@ import { Component } from "@angular/core";
 @Component({
     selector: 'app-server',
     templateUrl : './server.component.html',
-    styleUrls: []
+    styles: [`
+    .clickable {
+        color: white;
+    };
+    `]
 })
 
 export class ServerComponent {
     disableButton: boolean = false;
+    names: Array<String> = ['Ronaldo', 'Messi', 'Neymar']
     
     constructor(){
         setTimeout(() => {
@@ -21,6 +26,10 @@ export class ServerComponent {
 
     changeInputText(e){
         console.log(e);
+    }
+
+    getBackgroundColor(){
+        return this.disableButton ? 'green': 'red';
     }
 
 

@@ -2,10 +2,31 @@
 
 <button [disabled]="disableButton">Add me</button>
 
-<h1>Button disabled </h1>
-<h2>- {{ disableButton }}</h2>
+<h1>Button disabled</h1>
+<h2 
+    [ngStyle]="{ backgroundColor: getBackgroundColor() }"
+    [ngClass]="{ clickable: disableButton == true }"
+>
+  {{ disableButton }}
+</h2>
 
-<button (click)='changeButtonStatus()'>Change button status</button>
+<h2 [ngStyle]="{ 'background-color': getBackgroundColor() }">
+  {{ disableButton }}
+</h2>
 
+<button (click)="changeButtonStatus()">Change button status</button>
 
 <input type="text" name="myname" (input)="changeInputText($event)" />
+
+<p *ngIf="disableButton; else disabledButtonMessage">Button is clickable</p>
+
+<ng-template #disabledButtonMessage>
+  <p>Button is disabled</p>
+</ng-template>
+
+
+<div *ngFor="let name of names">
+   {{ name }}
+</div>
+
+
