@@ -14,4 +14,13 @@ export class ShoppingListComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {}
+
+  addIngrediant(data){
+    console.log(data)
+    this.ingredients.push(data);
+  }
+
+  deleteIngrediant(data){
+    this.ingredients = this.ingredients.filter(i => i.name != data)
+  }
 }
