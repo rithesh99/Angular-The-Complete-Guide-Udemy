@@ -1,4 +1,11 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 
 @Component({
   selector: 'app-shopping-edit',
@@ -6,10 +13,14 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
   styleUrls: ['./shopping-edit.component.css'],
 })
 export class ShoppingEditComponent implements OnInit {
+  @ViewChild('nameInput') nameInputRef: ElementRef;
+  @ViewChild('amountInput') amountInputRef: ElementRef;
+
   @Output() addRecipeEvent = new EventEmitter<{
     name: string;
     amount: number;
   }>();
+  // @Output() addRecipeEvent = new EventEmitter<Ingredient>();
   @Output() deleteRecipeEvent = new EventEmitter<string>();
   constructor() {}
 
@@ -18,7 +29,7 @@ export class ShoppingEditComponent implements OnInit {
   onAddRecipe(item, amount) {
     if (item.value != '' && amount.value != '') {
       this.addRecipeEvent.emit({
-        name: item.value,
+        name: this.nameInputRef.nativeElement.value,
         amount: amount.value,
       });
     } else {
