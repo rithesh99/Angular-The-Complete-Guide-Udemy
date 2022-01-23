@@ -6,6 +6,7 @@ import { Ingredient } from '../shared/ingredient.model';
   styleUrls: ['./shopping-list.component.css'],
 })
 export class ShoppingListComponent implements OnInit {
+  selectedIngredient: Ingredient;
   ingredients: Ingredient[] = [
     new Ingredient('Apples', 5),
     new Ingredient('Tomatoes', 10),
@@ -15,12 +16,16 @@ export class ShoppingListComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  addIngrediant(data){
-    console.log(data)
+  addIngrediant(data) {
+    console.log(data);
     this.ingredients.push(data);
   }
 
-  deleteIngrediant(data){
-    this.ingredients = this.ingredients.filter(i => i.name != data)
+  deleteIngrediant(data) {
+    this.ingredients = this.ingredients.filter((i) => i.name != data);
+  }
+
+  onIngredientClick(data: Ingredient) {
+    this.selectedIngredient = data;
   }
 }

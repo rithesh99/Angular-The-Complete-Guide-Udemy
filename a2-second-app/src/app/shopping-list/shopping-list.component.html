@@ -3,6 +3,7 @@
     <app-shopping-edit 
       (addRecipeEvent)="addIngrediant($event)"
       (deleteRecipeEvent)="deleteIngrediant($event)"
+      [ingredient]="selectedIngredient"
       ></app-shopping-edit>
     <hr>
     <ul class="list-group">
@@ -10,6 +11,7 @@
         class="list-group-item"
         style="cursor: pointer"
         *ngFor="let ingredient of ingredients"
+        (click)="onIngredientClick(ingredient)"
       >
         {{ ingredient.name }} ({{ ingredient.amount }})
       </a>

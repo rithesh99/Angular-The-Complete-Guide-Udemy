@@ -2,10 +2,12 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Input,
   OnInit,
   Output,
   ViewChild,
 } from '@angular/core';
+import { Ingredient } from 'src/app/shared/ingredient.model';
 
 @Component({
   selector: 'app-shopping-edit',
@@ -22,10 +24,16 @@ export class ShoppingEditComponent implements OnInit {
   }>();
   // @Output() addRecipeEvent = new EventEmitter<Ingredient>();
   @Output() deleteRecipeEvent = new EventEmitter<string>();
+  @Input() ingredient: Ingredient;
   constructor() {}
 
   ngOnInit(): void {}
-
+  ngAfterViewChecked() {
+    if (this.ingredient && this.ingredient.name && this.ingredient.amount) {
+      this.nameInputRef.nativeElement.value = this.ingredient.name;
+      this.amountInputRef.nativeElement.value = this.ingredient.amount;
+    }
+  }
   onAddRecipe(item, amount) {
     if (item.value != '' && amount.value != '') {
       this.addRecipeEvent.emit({
