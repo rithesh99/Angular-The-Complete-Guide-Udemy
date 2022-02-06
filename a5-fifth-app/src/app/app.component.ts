@@ -1,36 +1,30 @@
-import { StringMap } from "@angular/compiler/src/compiler_facade_interface";
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
+import { AccountsService } from "./accounts.service";
 
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.css"],
+  // providers: [AccountsService],
 })
-export class AppComponent {
-  accounts: Array<{ name: string; status: string }> = [
-    {
-      name: "Master Account",
-      status: "active",
-    },
-    {
-      name: "Testaccount",
-      status: "inactive",
-    },
-    {
-      name: "Hidden Account",
-      status: "unknown",
-    },
-  ];
-
+export class AppComponent implements OnInit {
+  constructor(private accountsService: AccountsService) {}
+  // accounts : Array<{ name: string; status: string }> = [];
+  accounts : { name: string; status: string }[] = [];
+  ngOnInit() {
+    this.accounts = this.accountsService.getAccounts();
+  }
   onAccountAdded(newAccount: { name: string; status: string }) {
-    if (newAccount.name.trim().length == 0) {
-      alert("Please enter the name");
-      return;
-    }
-    this.accounts.push(newAccount);
+    // if (newAccount.name.trim().length == 0) {
+    //   alert("Please enter the name");
+    //   return;
+    // }
+    // this.accounts.push(newAccount);
+    this.accountsService.addAccount(newAccount);
   }
 
   onStatusChanged(updateInfo: { id: number; newStatus: string }) {
-    this.accounts[updateInfo.id].status = updateInfo.newStatus;
+    // this.accounts[updateInfo.id].status = updateInfo.newStatus;
+    this.accountsService.statusChanged(updateInfo);
   }
 }
