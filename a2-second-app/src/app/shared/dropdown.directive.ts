@@ -10,7 +10,8 @@ export class DropdownDirective {
 //   @HostListener('click') toggleOpen(eventData: Event) {
 //     this.dropDownClass = !this.dropDownClass;
 //   }
-  @HostListener('document:click', ['$event']) toggleOpen(event: Event) {
+  // @HostListener('document:click') toggleOpen(event: Event) {
+    @HostListener('document:click', ['$event']) toggleOpen(event: Event) {
       console.log(event.target);
       console.log(this.elRef.nativeElement);
     this.dropDownClass = this.elRef.nativeElement.contains(event.target)
