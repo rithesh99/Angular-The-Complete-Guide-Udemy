@@ -8,6 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Ingredient } from 'src/app/shared/ingredient.model';
+import { ShoppingListService } from '../shopping-list.service';
 
 @Component({
   selector: 'app-shopping-edit',
@@ -18,14 +19,10 @@ export class ShoppingEditComponent implements OnInit {
   @ViewChild('nameInput') nameInputRef: ElementRef;
   @ViewChild('amountInput') amountInputRef: ElementRef;
 
-  @Output() addRecipeEvent = new EventEmitter<{
-    name: string;
-    amount: number;
-  }>();
   // @Output() addRecipeEvent = new EventEmitter<Ingredient>();
   @Output() deleteRecipeEvent = new EventEmitter<string>();
   @Input() ingredient: Ingredient;
-  constructor() {}
+  constructor(private shoppingListServive: ShoppingListService) {}
 
   ngOnInit(): void {}
   ngAfterViewChecked() {
@@ -36,10 +33,11 @@ export class ShoppingEditComponent implements OnInit {
   }
   onAddRecipe(item, amount) {
     if (item.value != '' && amount.value != '') {
-      this.addRecipeEvent.emit({
+      const newIngredient = {
         name: this.nameInputRef.nativeElement.value,
         amount: amount.value,
-      });
+      };
+      this.shoppingListServive.addIngrediant(newIngredient);
     } else {
       alert('Enter item and amount');
     }
