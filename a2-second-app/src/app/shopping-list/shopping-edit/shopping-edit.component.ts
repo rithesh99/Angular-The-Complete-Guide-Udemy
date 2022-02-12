@@ -1,58 +1,32 @@
 import {
   Component,
-  ElementRef,
-  EventEmitter,
-  Input,
   OnInit,
-  Output,
-  ViewChild,
+  ElementRef,
+  ViewChild
 } from '@angular/core';
-import { Ingredient } from 'src/app/shared/ingredient.model';
+
+import { Ingredient } from '../../shared/ingredient.model';
 import { ShoppingListService } from '../shopping-list.service';
 
 @Component({
   selector: 'app-shopping-edit',
   templateUrl: './shopping-edit.component.html',
-  styleUrls: ['./shopping-edit.component.css'],
+  styleUrls: ['./shopping-edit.component.css']
 })
 export class ShoppingEditComponent implements OnInit {
-  @ViewChild('nameInput') nameInputRef: ElementRef;
-  @ViewChild('amountInput') amountInputRef: ElementRef;
+  @ViewChild('nameInput', { static: false }) nameInputRef: ElementRef;
+  @ViewChild('amountInput', { static: false }) amountInputRef: ElementRef;
 
-  // @Output() addRecipeEvent = new EventEmitter<Ingredient>();
-  @Output() deleteRecipeEvent = new EventEmitter<string>();
-  @Input() ingredient: Ingredient;
-  constructor(private shoppingListServive: ShoppingListService) {}
+  constructor(private slService: ShoppingListService) { }
 
-  ngOnInit(): void {}
-  ngAfterViewChecked() {
-    if (this.ingredient && this.ingredient.name && this.ingredient.amount) {
-      this.nameInputRef.nativeElement.value = this.ingredient.name;
-      this.amountInputRef.nativeElement.value = this.ingredient.amount;
-    }
-  }
-  onAddRecipe(item, amount) {
-    if (item.value != '' && amount.value != '') {
-      const newIngredient = {
-        name: this.nameInputRef.nativeElement.value,
-        amount: amount.value,
-      };
-      this.shoppingListServive.addIngrediant(newIngredient);
-    } else {
-      alert('Enter item and amount');
-    }
+  ngOnInit() {
   }
 
-  onClearRecipe(item, amount) {
-    item.value = '';
-    amount.value = '';
+  onAddItem() {
+    const ingName = this.nameInputRef.nativeElement.value;
+    const ingAmount = this.amountInputRef.nativeElement.value;
+    const newIngredient = new Ingredient(ingName, ingAmount);
+    this.slService.addIngredient(newIngredient);
   }
 
-  onDeleteRecipe(item) {
-    if (item.value != '') {
-      this.deleteRecipeEvent.emit(item.value);
-    } else {
-      alert('Enter item to delete');
-    }
-  }
 }
