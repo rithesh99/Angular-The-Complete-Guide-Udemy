@@ -1,3 +1,4 @@
+import { CanDeactivateGuard } from './servers/edit-server/can-deactivate-guard.service';
 import { HomeComponent } from "./home/home.component";
 import { UsersComponent } from "./users/users.component";
 import { ServersComponent } from "./servers/servers.component";
@@ -23,6 +24,7 @@ const appRoutes: Routes = [
       {
         path: ":id/edit",
         component: EditServerComponent,
+        canDeactivate: [CanDeactivateGuard]
       },
       {
         path: ":id",
