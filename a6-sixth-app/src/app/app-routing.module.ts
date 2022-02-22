@@ -1,4 +1,4 @@
-import { CanDeactivateGuard } from './servers/edit-server/can-deactivate-guard.service';
+import { CanDeactivateGuard } from "./servers/edit-server/can-deactivate-guard.service";
 import { HomeComponent } from "./home/home.component";
 import { UsersComponent } from "./users/users.component";
 import { ServersComponent } from "./servers/servers.component";
@@ -9,6 +9,7 @@ import { RouterModule, Routes } from "@angular/router";
 import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
 import { NgModule } from "@angular/core";
 import { AuthGuard } from "./auth-guard.service";
+import { ErrorPageComponentComponent } from "./error-page-component/error-page-component.component";
 
 const appRoutes: Routes = [
   {
@@ -24,7 +25,7 @@ const appRoutes: Routes = [
       {
         path: ":id/edit",
         component: EditServerComponent,
-        canDeactivate: [CanDeactivateGuard]
+        canDeactivate: [CanDeactivateGuard],
       },
       {
         path: ":id",
@@ -44,7 +45,9 @@ const appRoutes: Routes = [
   },
   {
     path: "page-not-found",
-    component: PageNotFoundComponent,
+    // component: PageNotFoundComponent,
+    component: ErrorPageComponentComponent,
+    data: { message: "Page not found" },
   },
   {
     path: "**",
@@ -53,8 +56,7 @@ const appRoutes: Routes = [
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(appRoutes)],
-    exports: [RouterModule]
-  })
-
+  imports: [RouterModule.forRoot(appRoutes)],
+  exports: [RouterModule],
+})
 export class AppRoutingModule {}
