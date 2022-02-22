@@ -10,6 +10,7 @@ import { PageNotFoundComponent } from "./page-not-found/page-not-found.component
 import { NgModule } from "@angular/core";
 import { AuthGuard } from "./auth-guard.service";
 import { ErrorPageComponentComponent } from "./error-page-component/error-page-component.component";
+import { ServerResolver } from "./servers/server/server-resolver.service";
 
 const appRoutes: Routes = [
   {
@@ -30,6 +31,7 @@ const appRoutes: Routes = [
       {
         path: ":id",
         component: ServerComponent,
+        resolve: { server: ServerResolver }
       },
     ],
   },
