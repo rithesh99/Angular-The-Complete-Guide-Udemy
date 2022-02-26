@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { interval, Observable, Subscription } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
@@ -21,28 +22,37 @@ export class HomeComponent implements OnInit {
       let count: number = 0;
       setInterval(() => {
         observer.next(count);
-        if ((count = 1)) {
+        if (count == 3) {
           observer.complete();
         }
-        if (count > 1) {
+        if (count > 3) {
           observer.error(new Error('Greater than 3'));
         }
         count++;
       }, 1000);
     });
 
-    this.firstObsSubscription = customIntervalObservable.subscribe(
-      (count: any) => {
-        console.log(count);
-      },
-      (error: Error) => {
-        console.log(error.message);
-        alert(error.message);
-      },
-      () => {
-        console.log('Completed');
-      }
-    );
+    this.firstObsSubscription = customIntervalObservable
+      .pipe(
+        filter((count: number) => {
+          return count % 2 == 0;
+        }),
+        map((count: number) => {
+          return 'Round: ' + count;
+        })
+      )
+      .subscribe(
+        (count: any) => {
+          console.log(count);
+        },
+        (error: Error) => {
+          console.log(error.message);
+          alert(error.message);
+        },
+        () => {
+          console.log('Completed');
+        }
+      );
   }
 
   ngOnDestroy() {
