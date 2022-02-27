@@ -3,7 +3,7 @@
     <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
       <!-- <form (ngSubmit)="onSubmit(f)" #f="ngForm"> -->
       <form (ngSubmit)="onSubmit()" #f="ngForm">
-        <div id="user-data">
+        <div id="user-data" ngModelGroup="userData" #userData="ngModelGroup">
           <div class="form-group">
             <label for="username">Username</label>
             <input
@@ -39,6 +39,9 @@
             >
           </div>
         </div>
+        <span class="help-block" *ngIf="!userData.valid && userData.touched"
+          >User data is invalid</span
+        >
         <div class="form-group">
           <label for="secret">Secret Questions</label>
           <select
