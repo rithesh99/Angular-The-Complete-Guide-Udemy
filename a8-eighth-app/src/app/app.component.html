@@ -19,7 +19,11 @@
               >Please enter username</span
             >
           </div>
-          <button class="btn btn-default" type="button" (click)="suggestUserName()">
+          <button
+            class="btn btn-default"
+            type="button"
+            (click)="suggestUserName()"
+          >
             Suggest an Username
           </button>
           <div class="form-group" style="margin-top: 15px">
@@ -80,9 +84,13 @@
           Submit
         </button>
       </form>
+      <hr/>
+      <button class="btn btn-danger" type="submit" (click)="resetForm()">
+        Reset
+      </button>
     </div>
   </div>
-  <hr/>
+  <hr />
   <div class="rpw" *ngIf="f.submitted">
     {{ formData.value.userData.username }}
   </div>
