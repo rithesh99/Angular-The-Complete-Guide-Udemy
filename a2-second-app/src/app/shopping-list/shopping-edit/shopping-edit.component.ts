@@ -48,6 +48,10 @@ export class ShoppingEditComponent implements OnInit {
       formData.value.name,
       formData.value.amount
     );
-    this.slService.addIngredient(newIngredient);
+    if (this.editMode) {
+      this.slService.updateIngredient(this.editedItemIndex, newIngredient);
+    } else {
+      this.slService.addIngredient(newIngredient);
+    }
   }
 }
