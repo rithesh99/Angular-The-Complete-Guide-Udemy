@@ -8,7 +8,8 @@ import { Post } from "./post.model";
   styleUrls: ["./app.component.css"],
 })
 export class AppComponent implements OnInit {
-  loadedPosts = [];
+  loadedPosts: Post[] = [];
+  isLoading: boolean = false;
 
   constructor(private http: HttpClient) {}
 
@@ -39,6 +40,7 @@ export class AppComponent implements OnInit {
   }
 
   private fetchPosts() {
+    this.isLoading = true;
     this.http
       .get<{ [id: string]: Post }>(
         "https://ng-udemy-4e040-default-rtdb.firebaseio.com/posts.json"
@@ -54,6 +56,8 @@ export class AppComponent implements OnInit {
       )
       .subscribe((posts) => {
         console.log(posts);
+        this.loadedPosts = posts;
+        this.isLoading = false;
       });
   }
 }
