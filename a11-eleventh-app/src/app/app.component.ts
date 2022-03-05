@@ -4,6 +4,7 @@ import { map } from "rxjs/operators";
 import { Post } from "./post.model";
 import { PostsService } from "./posts.service";
 import { NgForm } from "@angular/forms";
+import { Subscription } from "rxjs";
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
@@ -15,20 +16,24 @@ export class AppComponent implements OnInit {
   loadedPosts: Post[] = [];
   isLoading: boolean = false;
   error: string = null;
+  errorSubcription: Subscription;
 
   constructor(private http: HttpClient, private postsService: PostsService) {}
 
   ngOnInit() {
     this.onFetchPosts();
+    this.errorSubcription = this.postsService.error.subscribe((error) => {
+      this.error = "ERROR: " + error;
+    });
+  }
+
+  ngOnDestroy() {
+    this.errorSubcription.unsubscribe();
   }
 
   onCreatePost(postData: Post) {
     // Send Http request
-    this.postsService.createPost(postData).subscribe((post) => {
-      console.log("Response from API ", post);
-      this.formData.form.reset();
-      this.onFetchPosts.bind(this)();
-    });
+    this.postsService.createPost(postData);
   }
 
   onFetchPosts() {
@@ -40,7 +45,6 @@ export class AppComponent implements OnInit {
         this.isLoading = false;
       },
       (error) => {
-        console.log(error.error.error);
         this.isLoading = false;
         this.error = error.error.error;
       }

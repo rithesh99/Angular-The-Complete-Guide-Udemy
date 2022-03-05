@@ -51,12 +51,12 @@
   </div>
   <div class="row">
     <div class="col-xs-12 col-md-6 col-md-offset-3">
-      <img 
-        *ngIf="isLoading" 
-        src="https://media1.giphy.com/media/y1ZBcOGOOtlpC/giphy.gif" 
+      <img
+        *ngIf="isLoading"
+        src="https://media1.giphy.com/media/y1ZBcOGOOtlpC/giphy.gif"
         alt=""
-        style="display:block; margin: auto"
-        >
+        style="display: block; margin: auto"
+      />
       <p *ngIf="loadedPosts.length === 0 && !isLoading">No posts available!</p>
       <div *ngIf="error" class="alert alert-danger">
         <h4>An Error occurred</h4>
