@@ -14,6 +14,7 @@ export class AppComponent implements OnInit {
 
   loadedPosts: Post[] = [];
   isLoading: boolean = false;
+  error: string = null;
 
   constructor(private http: HttpClient, private postsService: PostsService) {}
 
@@ -33,17 +34,29 @@ export class AppComponent implements OnInit {
   onFetchPosts() {
     // Send Http request
     this.isLoading = true;
-    this.postsService.fetchPosts().subscribe((posts) => {
-      this.loadedPosts = posts;
-      this.isLoading = false;
-    });
+    this.postsService.fetchPosts().subscribe(
+      (posts) => {
+        this.loadedPosts = posts;
+        this.isLoading = false;
+      },
+      (error) => {
+        console.log(error.error.error);
+        this.isLoading = false;
+        this.error = error.error.error;
+      }
+    );
   }
 
   onClearPosts() {
     // Send Http request
-    this.postsService.clearPosts().subscribe((posts) => {
-      this.loadedPosts = [];
-      console.log("Response from API ", posts);
-    });
+    this.postsService.clearPosts().subscribe(
+      (posts) => {
+        this.loadedPosts = [];
+        console.log("Response from API ", posts);
+      },
+      (error) => {
+        this.error = error.error.error;
+      }
+    );
   }
 }
