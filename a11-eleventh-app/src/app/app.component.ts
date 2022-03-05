@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-
+import { map } from "rxjs/operators";
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
@@ -11,7 +11,9 @@ export class AppComponent implements OnInit {
 
   constructor(private http: HttpClient) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.fetchPosts();
+  }
 
   onCreatePost(postData: { title: string; content: string }) {
     // Send Http request
@@ -28,9 +30,27 @@ export class AppComponent implements OnInit {
 
   onFetchPosts() {
     // Send Http request
+    this.fetchPosts();
   }
 
   onClearPosts() {
     // Send Http request
+  }
+
+  private fetchPosts() {
+    this.http
+      .get("https://ng-udemy-4e040-default-rtdb.firebaseio.com/posts.json")
+      .pipe(
+        map((data) => {
+          var results = [];
+          for (let i in data) {
+            results.push({ ...data[i], id: i });
+          }
+          return results;
+        })
+      )
+      .subscribe((posts) => {
+        console.log(posts);
+      });
   }
 }
