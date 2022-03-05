@@ -1,63 +1,49 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { map } from "rxjs/operators";
 import { Post } from "./post.model";
+import { PostsService } from "./posts.service";
+import { NgForm } from "@angular/forms";
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.css"],
 })
 export class AppComponent implements OnInit {
+  @ViewChild("postForm") formData: NgForm;
+
   loadedPosts: Post[] = [];
   isLoading: boolean = false;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private postsService: PostsService) {}
 
   ngOnInit() {
-    this.fetchPosts();
+    this.onFetchPosts();
   }
 
   onCreatePost(postData: Post) {
     // Send Http request
-    this.http
-      .post<{ id: string }>(
-        "https://ng-udemy-4e040-default-rtdb.firebaseio.com/posts.json",
-        postData
-      )
-      .subscribe((posts) => {
-        console.log(posts);
-      });
-    console.log(postData);
+    this.postsService.createPost(postData).subscribe((post) => {
+      console.log("Response from API ", post);
+      this.formData.form.reset();
+      this.onFetchPosts.bind(this)();
+    });
   }
 
   onFetchPosts() {
     // Send Http request
-    this.fetchPosts();
+    this.isLoading = true;
+    this.postsService.fetchPosts().subscribe((posts) => {
+      this.loadedPosts = posts;
+      this.isLoading = false;
+    });
   }
 
   onClearPosts() {
     // Send Http request
-  }
-
-  private fetchPosts() {
-    this.isLoading = true;
-    this.http
-      .get<{ [id: string]: Post }>(
-        "https://ng-udemy-4e040-default-rtdb.firebaseio.com/posts.json"
-      )
-      .pipe(
-        map((data: { [id: string]: Post }) => {
-          var results: Post[] = [];
-          for (let i in data) {
-            results.push({ ...data[i], id: i });
-          }
-          return results;
-        })
-      )
-      .subscribe((posts) => {
-        console.log(posts);
-        this.loadedPosts = posts;
-        this.isLoading = false;
-      });
+    this.postsService.clearPosts().subscribe((posts) => {
+      this.loadedPosts = [];
+      console.log("Response from API ", posts);
+    });
   }
 }
