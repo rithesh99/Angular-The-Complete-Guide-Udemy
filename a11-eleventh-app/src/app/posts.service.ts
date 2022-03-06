@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Subject, throwError } from "rxjs";
 import { catchError, map } from "rxjs/operators";
@@ -30,7 +30,13 @@ export class PostsService {
   fetchPosts() {
     return this.http
       .get<{ [id: string]: Post }>(
-        "https://ng-udemy-4e040-default-rtdb.firebaseio.com/posts.json"
+        "https://ng-udemy-4e040-default-rtdb.firebaseio.com/posts.json",
+        {
+          headers: new HttpHeaders({
+            namez: "Rithesh",
+          }),
+          params: new HttpParams().set("key", "123"),
+        }
       )
       .pipe(
         map((data: { [id: string]: Post }) => {
