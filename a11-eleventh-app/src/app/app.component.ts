@@ -24,6 +24,7 @@ export class AppComponent implements OnInit {
     this.onFetchPosts();
     this.errorSubcription = this.postsService.error.subscribe((error) => {
       this.error = "ERROR: " + error;
+      this.isLoading = false;
     });
   }
 
@@ -59,8 +60,13 @@ export class AppComponent implements OnInit {
         console.log("Response from API ", posts);
       },
       (error) => {
+        this.isLoading = false;
         this.error = error.error.error;
       }
     );
+  }
+
+  handleError() {
+    this.error = null;
   }
 }
