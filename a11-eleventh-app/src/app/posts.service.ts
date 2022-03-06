@@ -15,7 +15,11 @@ export class PostsService {
     this.http
       .post<{ id: string }>(
         "https://ng-udemy-4e040-default-rtdb.firebaseio.com/posts.json",
-        postData
+        postData,
+        {
+          // observe: "response",
+          observe: "body",
+        }
       )
       .subscribe(
         (res) => {
@@ -36,6 +40,7 @@ export class PostsService {
             namez: "Rithesh",
           }),
           params: new HttpParams().set("key", "123"),
+          responseType: "json",
         }
       )
       .pipe(
