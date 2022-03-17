@@ -5,7 +5,12 @@ import { Subscription } from 'rxjs';
 
 import { Ingredient } from '../../shared/ingredient.model';
 import { ShoppingListService } from '../shopping-list.service';
-import { ADD_INGREDIENT } from '../store/shopping-list.actions';
+import {
+  ADD_INGREDIENT,
+  DeleteIngredient,
+  DELETE_INGREDIENT,
+  UpdateIngredient,
+} from '../store/shopping-list.actions';
 
 @Component({
   selector: 'app-shopping-edit',
@@ -54,7 +59,13 @@ export class ShoppingEditComponent implements OnInit {
       formData.value.amount
     );
     if (this.editMode) {
-      this.slService.updateIngredient(this.editedItemIndex, newIngredient);
+      this.store.dispatch(
+        new UpdateIngredient({
+          index: this.editedItemIndex,
+          ingredient: newIngredient,
+        })
+      );
+      // this.slService.updateIngredient(this.editedItemIndex, newIngredient);
     } else {
       this.store.dispatch({
         type: ADD_INGREDIENT,
@@ -69,7 +80,12 @@ export class ShoppingEditComponent implements OnInit {
   }
 
   deleteItem() {
-    this.slService.deleteIngredient(this.editedItemIndex);
+    // this.store.dispatch({
+    //   type: DELETE_INGREDIENT,
+    //   payload: this.editedItemIndex,
+    // });
+    this.store.dispatch(new DeleteIngredient(this.editedItemIndex));
+    // this.slService.deleteIngredient(this.editedItemIndex);
     this.clearForm();
   }
   clearForm() {
