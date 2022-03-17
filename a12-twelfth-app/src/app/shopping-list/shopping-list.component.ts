@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs';
 
 import { Ingredient } from '../shared/ingredient.model';
 import { AppState } from '../store/app.reducer';
-import { ShoppingListService } from './shopping-list.service';
 import { StartEdit } from './store/shopping-list.actions';
 
 @Component({
@@ -17,7 +16,6 @@ export class ShoppingListComponent implements OnInit {
   private subscription: Subscription;
 
   constructor(
-    private slService: ShoppingListService,
     private store: Store<AppState>
   ) {}
 

@@ -5,7 +5,6 @@ import { Subscription } from 'rxjs';
 import { AppState } from 'src/app/store/app.reducer';
 
 import { Ingredient } from '../../shared/ingredient.model';
-import { ShoppingListService } from '../shopping-list.service';
 import {
   ADD_INGREDIENT,
   DeleteIngredient,
@@ -28,7 +27,6 @@ export class ShoppingEditComponent implements OnInit {
   editedItem: Ingredient;
 
   constructor(
-    private slService: ShoppingListService,
     private store: Store<AppState>
   ) {}
 
