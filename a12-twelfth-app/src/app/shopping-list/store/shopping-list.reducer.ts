@@ -9,20 +9,20 @@ import {
   UPDATE_INGREDIENT,
 } from './shopping-list.actions';
 
-export interface State {
+export interface ShoppingState {
   ingredients: Ingredient[];
   editedIngredient: Ingredient;
   editedIngredientIndex: number;
 }
 
-const initialState: State = {
+const initialState: ShoppingState = {
   ingredients: [new Ingredient('Apples', 5), new Ingredient('Tomatoes', 10)],
   editedIngredient: null,
   editedIngredientIndex: -1,
 };
 
 export function shoppingListReducer(
-  state: State = initialState,
+  state: ShoppingState = initialState,
   action: ShoppingListActions
 ) {
   switch (action.type) {
