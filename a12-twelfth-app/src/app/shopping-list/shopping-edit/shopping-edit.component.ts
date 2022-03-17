@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
+import { AppState } from 'src/app/store/app.reducer';
 
 import { Ingredient } from '../../shared/ingredient.model';
 import { ShoppingListService } from '../shopping-list.service';
@@ -9,6 +10,7 @@ import {
   ADD_INGREDIENT,
   DeleteIngredient,
   DELETE_INGREDIENT,
+  StopEdit,
   UpdateIngredient,
 } from '../store/shopping-list.actions';
 
@@ -23,31 +25,35 @@ export class ShoppingEditComponent implements OnInit {
   @ViewChild('f') formData: NgForm;
   subscription: Subscription;
   editMode: boolean = false;
-  editedItemIndex: number;
   editedItem: Ingredient;
 
   constructor(
     private slService: ShoppingListService,
-    private store: Store<any>
+    private store: Store<AppState>
   ) {}
 
   ngOnInit() {
-    this.subscription = this.slService.startedEditing.subscribe(
-      (itemNumber: number) => {
-        this.editedItemIndex = itemNumber;
-        this.editMode = true;
-        this.editedItem = this.slService.getIngredient(itemNumber);
-
-        this.formData.form.setValue({
-          name: this.editedItem.name,
-          amount: this.editedItem.amount,
-        });
-      }
-    );
+    // this.subscription = this.slService.startedEditing.subscribe(
+    // (itemNumber: number) => {
+    this.subscription = this.store
+      .select('shoppingList')
+      .subscribe((stateData) => {
+        if (stateData.editedIngredientIndex > -1) {
+          this.editMode = true;
+          this.editedItem = stateData.editedIngredient;
+          this.formData.form.setValue({
+            name: this.editedItem.name,
+            amount: this.editedItem.amount,
+          });
+        } else {
+          this.editMode = false;
+        }
+      });
   }
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    this.store.dispatch(new StopEdit());
   }
 
   onAddItem(formData: NgForm) {
@@ -61,7 +67,6 @@ export class ShoppingEditComponent implements OnInit {
     if (this.editMode) {
       this.store.dispatch(
         new UpdateIngredient({
-          index: this.editedItemIndex,
           ingredient: newIngredient,
         })
       );
@@ -73,7 +78,6 @@ export class ShoppingEditComponent implements OnInit {
       });
       // this.slService.addIngredient(newIngredient);
     }
-    this.editedItemIndex = null;
     this.editMode = false;
     this.editedItem = null;
     this.clearForm();
@@ -84,11 +88,12 @@ export class ShoppingEditComponent implements OnInit {
     //   type: DELETE_INGREDIENT,
     //   payload: this.editedItemIndex,
     // });
-    this.store.dispatch(new DeleteIngredient(this.editedItemIndex));
+    this.store.dispatch(new DeleteIngredient());
     // this.slService.deleteIngredient(this.editedItemIndex);
     this.clearForm();
   }
   clearForm() {
     this.formData.form.reset();
+    this.store.dispatch(new StopEdit());
   }
 }

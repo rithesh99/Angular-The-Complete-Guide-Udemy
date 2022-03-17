@@ -3,7 +3,9 @@ import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 
 import { Ingredient } from '../shared/ingredient.model';
+import { AppState } from '../store/app.reducer';
 import { ShoppingListService } from './shopping-list.service';
+import { StartEdit } from './store/shopping-list.actions';
 
 @Component({
   selector: 'app-shopping-list',
@@ -16,7 +18,7 @@ export class ShoppingListComponent implements OnInit {
 
   constructor(
     private slService: ShoppingListService,
-    private store: Store<{ shoppingList: { ingredients: Ingredient[] } }>
+    private store: Store<AppState>
   ) {}
 
   ngOnInit() {
@@ -36,6 +38,7 @@ export class ShoppingListComponent implements OnInit {
   }
 
   onEditItem(index: number) {
-    this.slService.startedEditing.next(index);
+    // this.slService.startedEditing.next(index);
+    this.store.dispatch(new StartEdit(index));
   }
 }
