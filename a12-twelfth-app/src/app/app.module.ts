@@ -12,6 +12,8 @@ import { ShoppingListModule } from './shopping-list/shopping-list.module';
 import { SharedModule } from './shared/shared.module';
 import { StoreModule } from '@ngrx/store';
 import { appReducer } from './store/app.reducer';
+import { AuthEffects } from './auth/store/auth.effects';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
   declarations: [AppComponent, HeaderComponent],
@@ -25,6 +27,7 @@ import { appReducer } from './store/app.reducer';
     SharedModule,
     CoreModule,
     StoreModule.forRoot(appReducer),
+    EffectsModule.forRoot([AuthEffects])
   ],
   bootstrap: [AppComponent],
   //NOTE: Angular version < 9
