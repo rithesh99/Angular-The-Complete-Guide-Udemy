@@ -6,7 +6,7 @@ import { Recipe } from './recipe.model';
 import { Ingredient } from '../shared/ingredient.model';
 import { Store } from '@ngrx/store';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class RecipeService {
   recipesChanged = new Subject<Recipe[]>();
 
